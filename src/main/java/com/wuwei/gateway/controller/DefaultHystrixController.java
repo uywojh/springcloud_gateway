@@ -12,10 +12,11 @@ import java.util.Map;
  * 默认降级处理
  */
 @RestController
+@RequestMapping("/fallback")
 public class DefaultHystrixController {
 
-    @RequestMapping("/defaultfallback")
-    public Map<String,String> defaultfallback(){
+    @RequestMapping("")
+    public Map<String,String> fallback(){
         System.out.println("降级操作...");
         Map<String,String> map = new HashMap<>();
         map.put("resultCode","fail");
@@ -23,4 +24,5 @@ public class DefaultHystrixController {
         map.put("resultObj","null");
         return map;
     }
+
 }
