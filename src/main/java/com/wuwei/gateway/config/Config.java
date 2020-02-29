@@ -2,12 +2,14 @@ package com.wuwei.gateway.config;
 
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import reactor.core.publisher.Mono;
 
 /**
  * @Author: wuwei
  * @Date:2020-02-28 22:31
  */
+@Configuration
 public class Config {
 
     @Bean
