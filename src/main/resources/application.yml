@@ -1,20 +1,71 @@
 server:
   port: 8961
 
+#spring:
+#  application:
+#    name: cloud-gateway
+#  profiles: gateway-server1
+#  cloud:
+#    config:
+#      # 对应分支
+#      label: master
+#      profile: prod
+#      discovery:
+#        service-id: cloud-config
+#        enabled: true
+
 spring:
   application:
     name: cloud-gateway
+
   profiles: gateway-server1
+  redis:
+    host: 172.16.246.128
+    port: 6379
+    password: 123456
+    database: 6
+
   cloud:
-    config:
-      # 对应分支
-      label: master
-      profile: prod
-      discovery:
-        service-id: cloud-config
-        enabled: true
+#    config:
+#      # 对应分支
+#      label: master
+#      profile: prod
+#      discovery:
+#        service-id: cloud-config
+#        enabled: true
+    gateway:
+      discovery:   #是否与服务发现组件进行结合，通过 serviceId(必须设置成大写) 转发到具体的服务实例。默认为false，设为true便开启通过服务中心的自动根据 serviceId 创建路由的功能。
+        locator:   #路由访问方式：http://Gateway_HOST:Gateway_PORT/大写的serviceId/**，其中微服务应用名默认大写访问。
+          enabled: true
+      routes:
+        - id: path_route
+          uri: lb://boot-hello-service
+          order: 0
+          predicates:
+            - Path=/test/**
+          filters:
+            - StripPrefix=1
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/fallback #熔断后访问路径
+        filters:
+          - name: RequestRateLimiter
+            args:
+              key-resolver: '#{@ipKeyResolver}'
+              redis-rate-limiter.replenishRate: 10
+              redis-rate-limiter.burstCapacity: 20
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000 #熔断超时时间
 
 eureka:
   client:
     serviceUrl:
       defaultZone: http://172.16.246.128:8761/eureka,http://172.16.246.128:8762/eureka
+    instance:
+      prefer-ip-address: true
