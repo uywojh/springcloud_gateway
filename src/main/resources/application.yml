@@ -45,7 +45,7 @@ spring:
             - Path=/test/**
           filters:
             - StripPrefix=1
-             路由降级配置
+#             路由降级配置
             - name: Hystrix
               args:
                 name: fallbackcmd   #与下面的配置一直
