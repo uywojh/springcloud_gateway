@@ -1,4 +1,9 @@
+server:
+  port: 8961
+
 spring:
+  application:
+    name: cloud-gateway
   profiles: gateway-server1
   cloud:
     config:
