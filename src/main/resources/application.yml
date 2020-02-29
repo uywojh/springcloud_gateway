@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: cloud-gateway
+  redis:
+    host: 172.16.246.128
+    port: 6379
+    password: 123456
+    database: 6
   profiles: gateway-server1
   cloud:
     gateway:
