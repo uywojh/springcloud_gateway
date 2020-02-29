@@ -49,12 +49,11 @@ spring:
               args:
                 name: fallbackcmd
                 fallbackUri: forward:/fallback #熔断后访问路径
-        filters:
-          - name: RequestRateLimiter
-            args:
-              key-resolver: '#{@ipKeyResolver}'
-              redis-rate-limiter.replenishRate: 10
-              redis-rate-limiter.burstCapacity: 20
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@ipKeyResolver}'
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
 hystrix:
   command:
     fallbackcmd:
@@ -64,8 +63,8 @@ hystrix:
             timeoutInMilliseconds: 2000 #熔断超时时间
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     serviceUrl:
       defaultZone: http://172.16.246.128:8761/eureka,http://172.16.246.128:8762/eureka
-    instance:
-      prefer-ip-address: true
