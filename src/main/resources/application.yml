@@ -45,10 +45,11 @@ spring:
             - Path=/test/**
           filters:
             - StripPrefix=1
-            - name: Hystrix
-              args:
-                name: fallbackcmd
-                fallbackUri: forward:/fallback #熔断后访问路径
+            # 路由降级配置
+#            - name: Hystrix
+#              args:
+#                name: fallbackcmd   #与下面的配置一直
+#                fallbackUri: forward:/fallback #熔断后访问路径
             - name: RequestRateLimiter
               args:
                 key-resolver: '#{@ipKeyResolver}'
@@ -60,7 +61,7 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 2000 #熔断超时时间
+            timeoutInMilliseconds: 3000 #熔断超时时间
 
 eureka:
   instance:
