@@ -40,3 +40,12 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://172.16.246.128:8761/eureka,http://172.16.246.128:8762/eureka
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
