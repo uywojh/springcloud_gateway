@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: cloud-config
   profiles: gateway-server1
   cloud:
     config:
