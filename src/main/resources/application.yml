@@ -13,3 +13,29 @@ spring:
       discovery:
         service-id: cloud-config
         enabled: true
+    gateway:
+      routes:
+        - id: path_route
+          uri: lb://boot-hello-service
+          order: 0
+          predicates:
+            - Path=/test/**
+          filters:
+            - StripPrefix=1
+            # 路由降级配置
+            - name: Hystrix
+              args:
+                name: fallbackcmd   #与下面的配置一直
+                fallbackUri: forward:/fallback #熔断后访问路径
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@ipKeyResolver}'
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000 #熔断超时时间
