@@ -1,13 +1,16 @@
+server:
+  port: 8961
+
 spring:
   application:
-    name: cloud-config
+    name: cloud-gateway
   profiles: gateway-server1
   cloud:
     config:
       fail-fast: true
-      name:
+      name: cloud-config
       label: master
       profile: prod
       discovery:
-      service-id: cloud-config
-      enabled: true
+        service-id: cloud-config
+        enabled: true
