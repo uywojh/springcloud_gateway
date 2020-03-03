@@ -4,13 +4,43 @@ server:
 spring:
   application:
     name: cloud-gateway
+  redis:
+    host: 172.16.246.128
+    port: 6379
+    password: 123456
+    database: 6
   profiles: gateway-server1
   cloud:
-    config:
-      fail-fast: true
-      name: cloud-gateway
-      label: master
-      profile: prod
-      discovery:
-        service-id: cloud-config
-        enabled: true
+    gateway:
+      routes:
+        - id: path_route
+          uri: lb://boot-hello-service
+          order: 0
+          predicates:
+            - Path=/test/**
+          filters:
+            - StripPrefix=1
+            # 路由降级配置
+            - name: Hystrix
+              args:
+                name: fallbackcmd   #与下面的配置一直
+                fallbackUri: forward:/fallback #熔断后访问路径
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@ipKeyResolver}'
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+hystrix:
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000 #熔断超时时间
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://172.16.246.128:8761/eureka,http://172.16.246.128:8762/eureka
