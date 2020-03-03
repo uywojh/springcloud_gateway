@@ -47,10 +47,5 @@ management:
       exposure:
         include: '*'
   endpoint:
-    gateway:
-      enabled: true
     health:
       show-details: always
-  info:
-    env:
-      enabled: true
