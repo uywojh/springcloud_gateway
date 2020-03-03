@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    config:
+      fail-fast: true
+      profile: prod
+      label: master
+      discovery:
+        enabled: true
+        service-id: cloud-config
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://172.16.246.128:8761/eureka,http://172.16.246.128:8762/eureka
