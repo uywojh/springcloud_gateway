@@ -8,7 +8,7 @@ spring:
   cloud:
     config:
       fail-fast: true
-      name: cloud-config
+      name: cloud-gateway
       label: master
       profile: prod
       discovery:
