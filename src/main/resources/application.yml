@@ -1,6 +1,3 @@
-server:
-  port: 8961
-
 spring:
   application:
     name: cloud-gateway
