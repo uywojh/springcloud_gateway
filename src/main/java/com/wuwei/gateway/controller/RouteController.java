@@ -1,8 +1,5 @@
 package com.wuwei.gateway.controller;
 
-import com.wuwei.gateway.utils.JwtCheck;
-
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -17,7 +14,6 @@ public class RouteController {
 
     private static volatile Map<Integer, AtomicInteger> jobTimeoutCountMap = new ConcurrentHashMap<>();
 
-    @JwtCheck
     public void restTest(){
         System.out.println("hs");
     }
